@@ -1,1 +1,38 @@
+node {
 
+stage('Checkout') {
+git credentialsId: 'e4e777df-8f21-4c9b-b123-6257614043ee', url: 'https://github.com/borisgr04/TestJenkins.git', branch: 'master'
+}
+
+stage ('Restore Nuget') {
+bat "dotnet restore "
+}
+
+stage('Clean') {
+bat 'dotnet clean '
+}
+
+stage('Build') {
+bat 'dotnet build --configuration Release'
+}
+
+//stage ('Test') {
+//bat "dotnet test Presupuesto.Core.Domain.Test/Presupuesto.Core.Domain.Test.csproj --logger trx;LogFileName=unit_tests.trx"
+//mstest testResultsFile:"**/*.trx", keepLongStdio: true
+//}
+
+stage ('Question') {
+def userInput = input( 'Do you approve deployment?' )
+[$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
+echo ("Env: "+userInput)
+}
+
+stage('Publish') {
+bat 'dotnet publish -c Release -o G:/ws/NetCore/EjemploJenkins'
+}
+
+stage('Report Email') {
+emailext body: 'Se terminó de desplegar', subject: 'Test - Se termino de desplegar', to: 'bgonzalez@byasystems.com.co'
+}
+
+}
