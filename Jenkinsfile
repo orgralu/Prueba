@@ -1,7 +1,7 @@
 node {
 
 stage('Checkout') {
-git credentialsId: 'e4e777df-8f21-4c9b-b123-6257614043ee', url: 'https://github.com/borisgr04/TestJenkins.git', branch: 'master'
+git credentialsId: 'c45408eb-ed34-4ba3-9a7a-bfe9f98a60e4', url: 'https://github.com/orgralu/Prueba.git'
 }
 
 stage ('Restore Nuget') {
